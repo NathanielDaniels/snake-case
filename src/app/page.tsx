@@ -1,7 +1,9 @@
-import { Check, Star } from "lucide-react";
+import { ArrowRight, Check, Star } from "lucide-react";
 import { Icons } from "@/components/Icons";
 import { MaxWidthWrapper } from "@/components/MaxWidthWrapper";
 import Phone from "@/components/Phone";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -113,7 +115,11 @@ export default function Home() {
               </span>{" "}
               say
             </h2>
-            <img src="/snake-2.png" className="w-24 order-0 lg:order-2" />
+            <img
+              src="/snake-2.png"
+              className="w-24 order-0 lg:order-2"
+              alt="snake"
+            />
           </div>
 
           <div className="mx-auto grid max-w-2xl grid-cols-1 px-4 lg:mx-0 lg:max-w-none lg:grid-cols-2 gap-y-16">
@@ -225,6 +231,36 @@ export default function Home() {
 
               <Phone className="w-60" imgSrc="/horse_phone.jpg" />
             </div>
+          </div>
+
+          <ul className="mx-auto mt-12 max-w-prose sm:text-lg space-y-2 w-fit">
+            <li className="w-fit">
+              <Check className="h-5 w-5 text-green-600 inline mr-1.5" />
+              High-quality silicone material
+            </li>
+            <li className="w-fit">
+              <Check className="h-5 w-5 text-green-600 inline mr-1.5" />
+              Scratch and fingerprint resistant coating
+            </li>
+            <li className="w-fit">
+              <Check className="h-5 w-5 text-green-600 inline mr-1.5" />
+              Wireless charging compatible
+            </li>
+            <li className="w-fit">
+              <Check className="h-5 w-5 text-green-600 inline mr-1.5" />5 year
+              print warranty
+            </li>
+          </ul>
+          <div className="flex justify-center">
+            <Link
+              className={buttonVariants({
+                size: "lg",
+                className: "mx-auto mt-8",
+              })}
+              href="/configure/upload"
+            >
+              Create your case now <ArrowRight className="h-4 w-4 ml-1.5" />
+            </Link>
           </div>
         </MaxWidthWrapper>
       </section>
