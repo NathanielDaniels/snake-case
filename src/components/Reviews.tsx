@@ -108,8 +108,6 @@ function Review({ imgSrc, className, ...props }: ReviewProps) {
   );
 }
 
-// console.log(splitArray(PHONES, 3));
-
 function ReviewGrid() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.4 });
@@ -161,7 +159,7 @@ export function Reviews() {
       <img
         aria-hidden="true"
         src="/what-people-are-buying.png"
-        className="absolute select-none hidden xl:block -left-32 top-1/3"
+        className="absolute select-none hidden 2xl:block -left-45 top-1/3"
       />
       <ReviewGrid />
     </MaxWidthWrapper>

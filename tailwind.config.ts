@@ -39,6 +39,9 @@ const config = {
       },
     },
     extend: {
+      spacing: {
+        "45": "12rem", // Adjust the value to match the desired spacing
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
