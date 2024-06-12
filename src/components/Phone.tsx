@@ -7,13 +7,7 @@ interface PhoneProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Phone = ({ imgSrc, className, dark = false, ...props }: PhoneProps) => {
   return (
-    <div
-      className={cn(
-        "relative pointer-events-none z-50 overflow-hidden",
-        className
-      )}
-      {...props}
-    >
+    <div className={cn("relative z-50 overflow-hidden ", className)} {...props}>
       <img
         src={
           dark

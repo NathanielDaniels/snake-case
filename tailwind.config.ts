@@ -91,6 +91,20 @@ const config = {
             opacity: "1",
           },
         },
+        shake: {
+          "0%, 100%": {
+            transform: "rotate(0deg)",
+            // transform: "translateX(0)",
+          },
+          "10%, 30%, 50%, 70%, 90%": {
+            transform: "rotate(-4deg)",
+            // transform: "translateX(-10px)",
+          },
+          "20%, 40%, 60%, 80%": {
+            transform: "rotate(4deg)",
+            // transform: "translateX(10px)",
+          },
+        },
         marquee: {
           "100%": {
             transform: "translateY(-50%)",
@@ -104,7 +118,7 @@ const config = {
       animation: {
         marquee: "marquee var(--marquee-duration) linear infinite",
         "fade-in": "fade-in 0.5s linear forwards",
-        flashing: "flashing 1.4s infinite linear",
+        "phone-hover": "shake 0.82s cubic-bezier(.36,.07,.19,.97) both",
       },
     },
   },
