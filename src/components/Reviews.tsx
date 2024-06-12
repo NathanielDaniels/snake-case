@@ -40,6 +40,7 @@ function ReviewColumn({
   reviewClassName?: (reviewIndex: number) => string;
   msPerPixel?: number;
 }) {
+  const [isHovered, setIsHovered] = useState(false);
   const columnRef = useRef<HTMLDivElement | null>(null);
   const [columnHeight, setColumnHeight] = useState(0);
   const duration = `${columnHeight * msPerPixel}ms`;
@@ -62,7 +63,15 @@ function ReviewColumn({
     <div
       ref={columnRef}
       className={cn("animate-marquee space-y-8 py-4", className)}
-      style={{ "--marquee-duration": duration } as React.CSSProperties}
+      // style={{ "--marquee-duration": duration } as React.CSSProperties}
+      style={
+        {
+          "--marquee-duration": duration,
+          animationPlayState: isHovered ? "paused" : "running",
+        } as React.CSSProperties
+      }
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {reviews.concat(reviews).map((imgSrc, reviewIndex) => (
         <Review
