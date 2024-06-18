@@ -94,15 +94,12 @@ const config = {
         shake: {
           "0%, 100%": {
             transform: "rotate(0deg)",
-            // transform: "translateX(0)",
           },
-          "10%, 30%, 50%, 70%, 90%": {
-            transform: "rotate(-4deg)",
-            // transform: "translateX(-10px)",
+          "20%, 60%": {
+            transform: "rotate(-2deg)",
           },
-          "20%, 40%, 60%, 80%": {
-            transform: "rotate(4deg)",
-            // transform: "translateX(10px)",
+          "40%, 80%": {
+            transform: "rotate(2deg)",
           },
         },
         marquee: {
