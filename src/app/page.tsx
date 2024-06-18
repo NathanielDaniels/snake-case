@@ -100,7 +100,10 @@ export default function Home() {
                 className="absolute w-20 -left-6 -bottom-6 select-none"
                 alt="dotted line"
               />
-              <Phone className="w-64" imgSrc="/testimonials/1.jpg" />
+              <Phone
+                className="w-64 hover:animate-phone-hover"
+                imgSrc="/testimonials/1.jpg"
+              />
             </div>
           </div>
         </MaxWidthWrapper>
@@ -227,7 +230,7 @@ export default function Home() {
                 <img
                   src="/horse.jpg"
                   className="rounded-md object-cover bg-white shadow-2xl ring-1 ring-gray-900/10 h-full w-full"
-                  alt="horse"
+                  alt="image of a horse"
                 />
               </div>
 
