@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer"; // Import the Footer component
 import { Recursive } from "next/font/google";
+import { Toaster } from "@/components/ui/toaster";
 const recursive = Recursive({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -24,6 +25,8 @@ export default function RootLayout({
           <div className="flex-1 flex flex-col h-full">{children}</div>
           <Footer />
         </main>
+
+        <Toaster />
       </body>
     </html>
   );
