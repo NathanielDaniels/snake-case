@@ -23,13 +23,14 @@ const Steps = () => {
   return (
     <ol className="rounded-md bg-white lg:flex lg:rounded-none lg:border-1 lg:border-r lg:border-gray-200">
       {StepsArr.map((step, index) => {
+        const { name, description, url } = step;
         const isCurrent = pathname.endsWith(step.url);
         const isCompleted = StepsArr.slice(index + 1).some((step) =>
           pathname.endsWith(step.url)
         );
         const imgPath = `/snake-${index + 1}.png`;
         return (
-          <li key={step.name} className="relative overflow-hidden lg:flex-1">
+          <li key={name} className="relative overflow-hidden lg:flex-1">
             <div>
               <span
                 className={cn(
