@@ -3,17 +3,17 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 const StepsArr = [
   {
-    name: "step 1: Add image",
+    name: "Step 1: Add image",
     description: "Choose an image for your case",
     url: "/upload",
   },
   {
-    name: "step 2: Customize design",
+    name: "Step 2: Customize design",
     description: "Make the case your own with custom text and colors",
     url: "/design",
   },
   {
-    name: "step 3: Summary",
+    name: "Step 3: Summary",
     description: "Review your final design",
     url: "/preview",
   },
