@@ -1,15 +1,13 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
-import { on } from "events";
-import { progress } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+import { useUploadThing } from "@/lib/uploadthing";
+import { cn } from "@/lib/utils";
 import { Image, Loader2, MousePointerSquareDashed } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import Dropzone, { FileRejection } from "react-dropzone";
-import { useUploadThing } from "@/lib/uploadthing";
-import { useToast } from "@/components/ui/use-toast";
 
 const Page = () => {
   const { toast } = useToast();
@@ -21,10 +19,9 @@ const Page = () => {
   const { startUpload, isUploading } = useUploadThing("imageUploader", {
     onClientUploadComplete: ([data]) => {
       const configId = data.serverData.configId;
-      console.log("configId", configId);
       startTransition(() => {
         router.push(`/configure/design?id=${configId}`);
-      })
+      });
     },
     onUploadProgress(progress) {
       setUploadProgress(progress);
@@ -32,17 +29,17 @@ const Page = () => {
   });
 
   const onDropRejected = (rejectedFiles: FileRejection[]) => {
-    console.log("rejected");
     const [file] = rejectedFiles;
     setIsDragOver(false);
+
     toast({
       title: `${file.file.type} type is not supported.`,
-      description: `File ${file.file.type} was rejected. Please use a PNG, JPG, or JPEG instead.`,
+      description: "Please choose a PNG, JPG, or JPEG image instead.",
       variant: "destructive",
     });
   };
+
   const onDropAccepted = (acceptedFiles: File[]) => {
-    console.log("accepted");
     startUpload(acceptedFiles, { configId: undefined });
     setIsDragOver(false);
   };
@@ -70,14 +67,8 @@ const Page = () => {
         >
           {({ getRootProps, getInputProps }) => (
             <div
+              className="h-full w-full flex-1 flex flex-col items-center justify-center"
               {...getRootProps()}
-              className={cn(
-                "h-full w-full flex-1 flex flex-col items-center justify-center",
-                {
-                  "opacity-50": isDragOver,
-                },
-                { ...getRootProps() }
-              )}
             >
               <input {...getInputProps()} />
               {isDragOver ? (
@@ -102,16 +93,16 @@ const Page = () => {
                   </div>
                 ) : isDragOver ? (
                   <p>
-                    <span className="font-semibold">Drop your files here</span>{" "}
-                    to upload
+                    <span className="font-semibold">Drop file</span> to upload
                   </p>
                 ) : (
                   <p>
                     <span className="font-semibold">Click to upload</span> or
-                    drag and drop your files here
+                    drag and drop
                   </p>
                 )}
               </div>
+
               {isPending ? null : (
                 <p className="text-xs text-zinc-500">PNG, JPG, JPEG</p>
               )}
