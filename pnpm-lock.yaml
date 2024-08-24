@@ -84,7 +84,7 @@ importers:
         specifier: ^14.2.3
         version: 14.2.3(react@18.3.1)
       react-rnd:
-        specifier: ^10.4.10
+        specifier: ^10.4.12
         version: 10.4.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       resend:
         specifier: ^3.2.0
