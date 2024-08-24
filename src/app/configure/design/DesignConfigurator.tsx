@@ -4,6 +4,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { cn } from "@/lib/utils";
 import NextImage from "next/image";
 import { Rnd } from "react-rnd";
+import HandleComponent from "@/components/HandleComponent";
 interface DesignConfiguratorProps {
   configId: string;
   imageUrl: string;
@@ -19,7 +20,7 @@ const DesignConfigurator = ({
   imageDimensions: { height, width },
 }: DesignConfiguratorProps) => {
   return (
-    <div className="relative mt-20 mb-20 pb-20 flex justify-center items-center">
+    <div className="relative mt-20 grid grid-cols-1 lg:grid-cols-3 mb-20 pb-20">
       <div
         // ref={containerRef}
         className="relative h-[37.5rem] overflow-hidden col-span-2 w-full max-w-4xl flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-12 text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
@@ -50,6 +51,14 @@ const DesignConfigurator = ({
             y: 205,
             height: height / 4,
             width: width / 4,
+          }}
+          className="absolute z-20 border-[3px] border-primary"
+          lockAspectRatio
+          resizeHandleComponent={{
+            bottomRight: <HandleComponent />,
+            bottomLeft: <HandleComponent />,
+            topRight: <HandleComponent />,
+            topLeft: <HandleComponent />,
           }}
         >
           <div className="relative w-full h-full">
