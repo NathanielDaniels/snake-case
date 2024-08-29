@@ -14,13 +14,13 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
+  DropdownMenuGroup,
+  DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 
 interface DesignConfiguratorProps {
   configId: string;
@@ -43,9 +43,6 @@ const DesignConfigurator = ({
     color: COLORS[0],
     model: MODELS.options[0],
   });
-  
-  const [selection, setSelection] = useState(MODELS.options[0]);
-
   return (
     <div className="relative mt-20 grid grid-cols-1 lg:grid-cols-3 mb-20 pb-20">
       <div
@@ -143,6 +140,7 @@ const DesignConfigurator = ({
                     ))}
                   </div>
                 </RadioGroup>
+
                 <div className="relative flex flex-col gap-3 w-full">
                   <Label>Model</Label>
                   <DropdownMenu>
@@ -153,27 +151,36 @@ const DesignConfigurator = ({
                         className="w-full justify-between"
                         // onClick={handleDropdownClick}
                       >
-                        {selection.label}
-                        {/* {options.model.label} */}
-                        <ChevronsUpDown className="w-5 h-5" />
+                        {options.model.label}
+                        <ChevronsUpDown className="ml-2 w-4 h-4 shrink-0 opacity-50" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56">
-                      {/* <DropdownMenuLabel>Panel Position</DropdownMenuLabel> */}
-                      {/* <DropdownMenuSeparator /> */}
-                      <DropdownMenuRadioGroup
-                        value={selection}
-                        onValueChange={setSelection}
-                      >
-                        {MODELS.options.map((option) => (
-                          <DropdownMenuRadioItem
-                            key={option.label}
-                            value={option.label}
-                          >
-                            {option.label}
-                          </DropdownMenuRadioItem>
-                        ))}
-                      </DropdownMenuRadioGroup>
+                    <DropdownMenuContent>
+                      {MODELS.options.map((model) => (
+                        <DropdownMenuItem
+                          key={model.label}
+                          className={cn(
+                            "flex text-sm gap-1 items-center p-1.5 cursor-default hover:bg-zinc-100",
+                            {
+                              "bg-zinc-100":
+                                model.label === options.model.label,
+                            }
+                          )}
+                          onClick={() => {
+                            setOptions((prev) => ({ ...prev, model }));
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              model.label === options.model.label
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                          {model.label}
+                        </DropdownMenuItem>
+                      ))}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
