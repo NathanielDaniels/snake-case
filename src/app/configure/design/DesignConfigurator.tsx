@@ -1,7 +1,7 @@
 "use client";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import NextImage from "next/image";
 import { Rnd } from "react-rnd";
 import HandleComponent from "@/components/HandleComponent";
@@ -217,14 +217,35 @@ const DesignConfigurator = ({
                               cn(
                                 "relative flex items-center cursor-pointer rounded p-2 active:ring-0 focus:ring-0 active:outline-none focus:outline-none border-2 border-transparent",
                                 {
-                                  "border-primary": checked,
+                                  "border-primary": active || checked,
                                 }
                               )
                             }
                           >
                             <div className="flex items-center justify-between w-full">
-                              <span>{option.label}</span>
-                              <span>+${option.price}</span>
+                              <span className="flex flex-col text-sm">
+                                <RadioGroup.Label
+                                  className="font-medium text-gray-900"
+                                  as="span"
+                                >
+                                  {option.label}
+                                </RadioGroup.Label>
+                                {option.description ? (
+                                  <RadioGroup.Description className="text-gray-500">
+                                    <span className="block sm:inline">
+                                      {option.description}
+                                    </span>
+                                  </RadioGroup.Description>
+                                ) : null}
+                              </span>
+                              <RadioGroup.Description
+                                className="mt-2 flex text-sm sm:ml-4 sm:mt-0 sm:flex-col sm:text-right"
+                                as="span"
+                              >
+                                <span className="font-medium text-gray-900">
+                                  +{formatPrice(option.price / 100)}
+                                </span>
+                              </RadioGroup.Description>
                             </div>
                           </RadioGroup.Option>
                         ))}
