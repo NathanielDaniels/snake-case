@@ -7,7 +7,7 @@ import { Rnd } from "react-rnd";
 import HandleComponent from "@/components/HandleComponent";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { RadioGroup } from "@headlessui/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   COLORS,
   MATERIALS,
@@ -65,6 +65,10 @@ const DesignConfigurator = ({
     x: 150,
     y: 205,
   });
+
+  useEffect(() => {
+    console.log("current Position", renderedPosition);
+  }, [renderedPosition]);
 
   const phoneCaseRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -165,6 +169,18 @@ const DesignConfigurator = ({
             y: 205,
             height: height / 4,
             width: width / 4,
+          }}
+          onResizeStop={(_, __, ref, ___, { x, y }) => {
+            setRenderedDimension({
+              height: parseInt(ref.style.height.slice(0, -2)),
+              width: parseInt(ref.style.width.slice(0, -2)),
+              // height: ref.offsetHeight,
+            });
+            setRenderedPosition({ x, y });
+          }}
+          onDragStop={(_, data) => {
+            const { x, y } = data;
+            setRenderedPosition({ x, y });
           }}
           className="absolute z-20 border-[3px] border-primary"
           lockAspectRatio
