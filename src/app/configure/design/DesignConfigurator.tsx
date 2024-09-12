@@ -66,12 +66,7 @@ const DesignConfigurator = ({
     y: 205,
   });
 
-  useEffect(() => {
-    console.log("current Position", renderedPosition);
-  }, [renderedPosition]);
-
   const phoneCaseRef = useRef<HTMLDivElement>(null);
-  console.log("phoneCaseRef", phoneCaseRef);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { startUpload } = useUploadThing("imageUploader");
@@ -93,8 +88,6 @@ const DesignConfigurator = ({
 
       const actualX = renderedPosition.x - leftOffset;
       const actualY = renderedPosition.y - topOffset;
-
-      console.log("actualX", actualX);
 
       const canvas = document.createElement("canvas");
       canvas.width = width;
@@ -122,10 +115,10 @@ const DesignConfigurator = ({
       const file = new File([blob], "filename.png", { type: "image/png" });
 
       await startUpload([file], { configId });
-    } catch (err) {
+    } catch (err: any) {
       toast({
         title: "Something went wrong",
-        description: `There was a problem saving your config, please try again. ${err.message}`,
+        description: `There was a problem saving your config, please try again!`,
         variant: "destructive",
       });
     }
@@ -143,11 +136,12 @@ const DesignConfigurator = ({
   return (
     <div className="relative mt-20 grid grid-cols-1 lg:grid-cols-3 mb-20 pb-20">
       <div
-        // ref={containerRef}
+        ref={containerRef}
         className="relative h-[37.5rem] overflow-hidden col-span-2 w-full max-w-4xl flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-12 text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
       >
         <div className="relative w-60 bg-opacity-50 pointer-events-none aspect-[896/1831]">
           <AspectRatio
+            ref={phoneCaseRef}
             ratio={896 / 1831}
             className="pointer-events-none relative z-50 aspect-[896/1831] w-full"
           >
@@ -177,7 +171,6 @@ const DesignConfigurator = ({
             setRenderedDimension({
               height: parseInt(ref.style.height.slice(0, -2)),
               width: parseInt(ref.style.width.slice(0, -2)),
-              // height: ref.offsetHeight,
             });
             setRenderedPosition({ x, y });
           }}
