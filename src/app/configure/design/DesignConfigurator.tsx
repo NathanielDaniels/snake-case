@@ -71,6 +71,7 @@ const DesignConfigurator = ({
   }, [renderedPosition]);
 
   const phoneCaseRef = useRef<HTMLDivElement>(null);
+  console.log("phoneCaseRef", phoneCaseRef);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { startUpload } = useUploadThing("imageUploader");
@@ -93,6 +94,8 @@ const DesignConfigurator = ({
       const actualX = renderedPosition.x - leftOffset;
       const actualY = renderedPosition.y - topOffset;
 
+      console.log("actualX", actualX);
+
       const canvas = document.createElement("canvas");
       canvas.width = width;
       canvas.height = height;
@@ -112,6 +115,7 @@ const DesignConfigurator = ({
       );
 
       const base64 = canvas.toDataURL();
+      console.log(base64);
       const base64Data = base64.split(",")[1];
 
       const blob = base64ToBlob(base64Data, "image/png");
@@ -121,8 +125,7 @@ const DesignConfigurator = ({
     } catch (err) {
       toast({
         title: "Something went wrong",
-        description:
-          "There was a problem saving your config, please try again.",
+        description: `There was a problem saving your config, please try again. ${err.message}`,
         variant: "destructive",
       });
     }
@@ -370,15 +373,16 @@ const DesignConfigurator = ({
                 // isLoading={isPending}
                 // disabled={isPending}
                 loadingText="Saving"
-                // onClick={() =>
-                //   saveConfig({
-                //     configId,
-                //     color: options.color.value,
-                //     finish: options.finish.value,
-                //     material: options.material.value,
-                //     model: options.model.value,
-                //   })
-                // }
+                onClick={
+                  () => saveConfiguration()
+                  // saveConfig({
+                  //   configId,
+                  //   color: options.color.value,
+                  //   finish: options.finish.value,
+                  //   material: options.material.value,
+                  //   model: options.model.value,
+                  // })
+                }
                 size="sm"
                 className="w-full"
               >
