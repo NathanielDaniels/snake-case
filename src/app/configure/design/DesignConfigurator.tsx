@@ -118,7 +118,7 @@ const DesignConfigurator = ({
     } catch (err: any) {
       toast({
         title: "Something went wrong",
-        description: `There was a problem saving your config, please try again!`,
+        description: `There was a problem saving your configuration, please try again!`,
         variant: "destructive",
       });
     }
@@ -232,7 +232,7 @@ const DesignConfigurator = ({
                           )
                         }
                       >
-                        <span
+                        <span 
                           className={cn(
                             `bg-${color.tw}`,
                             "w-8 h-8 rounded-full border border-black border-opacity-10"
