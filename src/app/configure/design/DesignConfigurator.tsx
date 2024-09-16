@@ -7,7 +7,7 @@ import { Rnd } from "react-rnd";
 import HandleComponent from "@/components/HandleComponent";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { RadioGroup } from "@headlessui/react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   COLORS,
   MATERIALS,
@@ -29,6 +29,9 @@ import { ArrowRight, Check, ChevronsUpDown } from "lucide-react";
 import { BASE_PRICE } from "@/config/products";
 import { toast } from "@/components/ui/use-toast";
 import { useUploadThing } from "@/lib/uploadthing";
+import { useMutation } from "@tanstack/react-query";
+import { saveConfig as _saveConfig, SaveConfigArgs } from "./action";
+import { useRouter } from "next/navigation";
 
 interface DesignConfiguratorProps {
   configId: string;
@@ -44,6 +47,31 @@ const DesignConfigurator = ({
   imageUrl,
   imageDimensions: { height, width },
 }: DesignConfiguratorProps) => {
+  const router = useRouter();
+  const { mutate: saveConfig } = useMutation({
+    mutationKey: ["save-config"],
+    mutationFn: async (args: SaveConfigArgs) => {
+      await Promise.all([saveConfiguration(), _saveConfig(args)]);
+    },
+    onError: () => {
+      toast({
+        title: "Something went wrong",
+        description: `There was an error on our end, please try again!`,
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Configuration saved",
+        description: `Your configuration has been saved successfully!`,
+        variant: "default",
+      });
+      router.push(`/configure/preview?id=${configId}`);
+    },
+  });
+
+  const [isPending, setIsPending] = useState(false);
+
   const [options, setOptions] = useState<{
     color: (typeof COLORS)[number];
     model: (typeof MODELS.options)[number];
@@ -108,7 +136,6 @@ const DesignConfigurator = ({
       );
 
       const base64 = canvas.toDataURL();
-      console.log(base64);
       const base64Data = base64.split(",")[1];
 
       const blob = base64ToBlob(base64Data, "image/png");
@@ -232,7 +259,7 @@ const DesignConfigurator = ({
                           )
                         }
                       >
-                        <span 
+                        <span
                           className={cn(
                             `bg-${color.tw}`,
                             "w-8 h-8 rounded-full border border-black border-opacity-10"
@@ -363,19 +390,19 @@ const DesignConfigurator = ({
                 )}
               </p>
               <Button
-                // isLoading={isPending}
-                // disabled={isPending}
+                isLoading={isPending}
+                disabled={isPending}
                 loadingText="Saving"
-                onClick={
-                  () => saveConfiguration()
-                  // saveConfig({
-                  //   configId,
-                  //   color: options.color.value,
-                  //   finish: options.finish.value,
-                  //   material: options.material.value,
-                  //   model: options.model.value,
-                  // })
-                }
+                onClick={() => {
+                  saveConfig({
+                    configId,
+                    color: options.color.value,
+                    finish: options.finish.value,
+                    material: options.material.value,
+                    model: options.model.value,
+                  });
+                  setIsPending(true);
+                }}
                 size="sm"
                 className="w-full"
               >
