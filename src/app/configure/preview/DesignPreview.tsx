@@ -1,12 +1,13 @@
 "use client";
 import LoginModal from "@/components/LoginModal";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { Configuration } from "@prisma/client";
 import Phone from "@/components/Phone";
 import { useEffect, useState } from "react";
 import Confetti from "react-dom-confetti";
 import { COLORS, MODELS } from "@/validators/option-validator";
 import { Check } from "lucide-react";
+import { PRODUCT_PRICES, BASE_PRICE } from "@/config/products";
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const config = {
     // angle: 90,
@@ -24,6 +25,18 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
 
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+
+  const borderDots = (
+    <span className="flex-grow border-b border-dotted border-gray-400 mx-2"></span>
+  );
+
+  // const recieptItem = (label: string, price: number) => (
+  //   <div className="flex items-center justify-between py-1 mt-2">
+  //     <p className="text-zinc-800">{label}</p>
+  //     {borderDots}
+  //     <p className="font-medium text-zinc-900">{formatPrice(price / 100)}</p>
+  //   </div>
+  // );
 
   useEffect(() => setShowConfetti(true));
 
@@ -46,7 +59,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
       </div>
       {/* <LoginModal isOpen={isLoginModalOpen} setIsOpen={setIsLoginModalOpen} /> */}
       <div className="mt-20 flex flex-col items-center md:grid text-sm sm:grid-cols-12 sm:grid-rows-1 sm:gap-x-6 md:gap-x-8 lg:gap-x-12">
-        <div className="md:col-span-4 lg:col-span-3 md:row-span-2 md:row-end-2">
+        <div className="mb-8 md:col-span-4 lg:col-span-3 md:row-span-2 md:row-end-2">
           <Phone
             className={cn(`bg-${tw}`, "max-w-[150px] md:max-w-full")}
             imgSrc={configuration.croppedImageUrl!}
@@ -77,13 +90,56 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
               <ol className="mt-3 text-zinc-700 list-disc list-inside">
                 <li>High-quality {material} material</li>
                 <li>Scratch & fingerprint resistant {finish} finish</li>
-                {/* <li>Color: {color}</li> */}
               </ol>
             </div>
           </div>
           <div className="mt-8">
             <div className="bg-gray-50 p-6 sm:rounded-lg sm:p-8">
-              <div className="flow-root"></div>
+              <div className="flow-root text-sm">
+                <div className="flex items-center justify-between py-1 mt-2">
+                  <p className="text-zinc-800">Base Price</p>
+                  {borderDots}
+                  <p className="font-medium text-zinc-900">
+                    {formatPrice(BASE_PRICE / 100)}
+                  </p>
+                </div>
+                {/* {recieptItem("Base Price", BASE_PRICE)} */}
+                {finish === "textured" ? (
+                  <div className="flex items-center justify-between py-1 mt-2">
+                    <p className="text-zinc-800">
+                      {finish.charAt(0).toUpperCase() + finish.slice(1)} Finish
+                    </p>
+                    {borderDots}
+                    <p className="font-medium text-zinc-900">
+                      {`+$${PRODUCT_PRICES.finish[finish] / 100}.00`}
+                    </p>
+                  </div>
+                ) : null}
+                {material === "polycarbonate" ? (
+                  <div className="flex items-center justify-between py-1 mt-2">
+                    <p className="text-zinc-800">
+                      {material.charAt(0).toUpperCase() + material.slice(1)}{" "}
+                      Material
+                    </p>
+                    {borderDots}
+                    <p className="font-medium text-zinc-900">
+                      {`+$${PRODUCT_PRICES.material[material] / 100}.00`}
+                    </p>
+                  </div>
+                ) : null}
+                <div className="flex items-center justify-between py-1 mt-2">
+                  <p className="text-zinc-800">Total:</p>
+                  <p className="font-medium text-zinc-900">
+                    {material && finish
+                      ? `$${
+                          PRODUCT_PRICES.material[material] / 100 +
+                          PRODUCT_PRICES.finish[finish] / 100 +
+                          BASE_PRICE / 100
+                        }.00`
+                      : `$${BASE_PRICE / 100}.00`}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
