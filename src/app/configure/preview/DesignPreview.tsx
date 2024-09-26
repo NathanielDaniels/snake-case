@@ -8,6 +8,7 @@ import Confetti from "react-dom-confetti";
 import { COLORS, MODELS } from "@/validators/option-validator";
 import { Check } from "lucide-react";
 import { PRODUCT_PRICES, BASE_PRICE } from "@/config/products";
+import { format } from "path";
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const config = {
     // angle: 90,
@@ -41,6 +42,14 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   useEffect(() => setShowConfetti(true));
 
   const { color, model, finish, material } = configuration;
+
+  let totalPrice = BASE_PRICE;
+  if (finish === "textured") {
+    totalPrice += PRODUCT_PRICES.finish[finish];
+  }
+  if (material === "polycarbonate") {
+    totalPrice += PRODUCT_PRICES.material[material];
+  }
 
   const tw = COLORS.find(
     (supportedColor) => supportedColor.value === color
@@ -111,7 +120,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
                     </p>
                     {borderDots}
                     <p className="font-medium text-zinc-900">
-                      {`+$${PRODUCT_PRICES.finish[finish] / 100}.00`}
+                      {`+${formatPrice(PRODUCT_PRICES.finish[finish] / 100)}`}
                     </p>
                   </div>
                 ) : null}
@@ -123,20 +132,17 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
                     </p>
                     {borderDots}
                     <p className="font-medium text-zinc-900">
-                      {`+$${PRODUCT_PRICES.material[material] / 100}.00`}
+                      {`+${formatPrice(PRODUCT_PRICES.material[material] / 100)}`}
                     </p>
                   </div>
                 ) : null}
+                <div className="my-2 h-px bg-gray-200 " />
                 <div className="flex items-center justify-between py-1 mt-2">
-                  <p className="text-zinc-800">Total:</p>
-                  <p className="font-medium text-zinc-900">
+                  <p className="font-semibold text-zinc-900">Order Total:</p>
+                  <p className="font-semibold text-zinc-900">
                     {material && finish
-                      ? `$${
-                          PRODUCT_PRICES.material[material] / 100 +
-                          PRODUCT_PRICES.finish[finish] / 100 +
-                          BASE_PRICE / 100
-                        }.00`
-                      : `$${BASE_PRICE / 100}.00`}
+                      ? formatPrice(totalPrice / 100)
+                      : formatPrice(BASE_PRICE / 100)}
                   </p>
                 </div>
               </div>
