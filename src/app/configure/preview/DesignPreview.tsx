@@ -6,9 +6,13 @@ import Phone from "@/components/Phone";
 import { useEffect, useState } from "react";
 import Confetti from "react-dom-confetti";
 import { COLORS, MODELS } from "@/validators/option-validator";
-import { Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { PRODUCT_PRICES, BASE_PRICE } from "@/config/products";
 import { format } from "path";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import router from "next/router";
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const config = {
     // angle: 90,
@@ -26,20 +30,12 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
 
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => setShowConfetti(true));
 
   const borderDots = (
     <span className="flex-grow border-b border-dotted border-gray-400 mx-2"></span>
   );
-
-  // const recieptItem = (label: string, price: number) => (
-  //   <div className="flex items-center justify-between py-1 mt-2">
-  //     <p className="text-zinc-800">{label}</p>
-  //     {borderDots}
-  //     <p className="font-medium text-zinc-900">{formatPrice(price / 100)}</p>
-  //   </div>
-  // );
-
-  useEffect(() => setShowConfetti(true));
 
   const { color, model, finish, material } = configuration;
 
@@ -58,6 +54,29 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const { label: modelLabel } = MODELS.options.find(
     ({ value }) => value === model
   )!;
+
+    const { mutate: saveConfig } = useMutation({
+    mutationKey: ["get-checkout-session"],
+    // mutationFn: async (args: SaveConfigArgs) => {
+    //   await Promise.all([saveConfiguration(), _saveConfig(args)]);
+    // },
+    onError: () => {
+      toast({
+        title: "Something went wrong",
+        description: `There was an error on our end, please try again!`,
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Configuration saved",
+        description: `Your configuration has been saved successfully!`,
+        variant: "default",
+      });
+      // router.push(`/configure/preview?id=${configId}`);
+    },
+  });
+
   return (
     <>
       <div
@@ -85,7 +104,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
         </div>
 
         <div className="sm:col-span-12 md:col-span-9 text-base">
-          <div className="grid grid-cols-1 gap-y-8 border-b border-gray-200 py-8 sm:grid-cols-2 sm:gap-x-6 sm:py-6 md:py-10">
+          <div className="grid grid-cols-1 gap-y-8 border-b border-gray-200 py-8 sm:grid-cols-2 sm:gap-x-4 sm:px-4 md:pt-10">
             <div>
               <p className="font-medium text-zinc-950">Highlights</p>
               <ol className="mt-3 text-zinc-700 list-disc list-inside">
@@ -112,8 +131,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
                     {formatPrice(BASE_PRICE / 100)}
                   </p>
                 </div>
-                {/* {recieptItem("Base Price", BASE_PRICE)} */}
-                {finish === "textured" ? (
+                {finish && finish !== "smooth" ? (
                   <div className="flex items-center justify-between py-1 mt-2">
                     <p className="text-zinc-800">
                       {finish.charAt(0).toUpperCase() + finish.slice(1)} Finish
@@ -124,7 +142,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
                     </p>
                   </div>
                 ) : null}
-                {material === "polycarbonate" ? (
+                {material && material !== "silicone" ? (
                   <div className="flex items-center justify-between py-1 mt-2">
                     <p className="text-zinc-800">
                       {material.charAt(0).toUpperCase() + material.slice(1)}{" "}
@@ -132,7 +150,9 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
                     </p>
                     {borderDots}
                     <p className="font-medium text-zinc-900">
-                      {`+${formatPrice(PRODUCT_PRICES.material[material] / 100)}`}
+                      {`+${formatPrice(
+                        PRODUCT_PRICES.material[material] / 100
+                      )}`}
                     </p>
                   </div>
                 ) : null}
@@ -140,12 +160,22 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
                 <div className="flex items-center justify-between py-1 mt-2">
                   <p className="font-semibold text-zinc-900">Order Total:</p>
                   <p className="font-semibold text-zinc-900">
-                    {material && finish
-                      ? formatPrice(totalPrice / 100)
-                      : formatPrice(BASE_PRICE / 100)}
+                    {formatPrice(totalPrice / 100)}
                   </p>
                 </div>
               </div>
+            </div>
+            <div className="mt-8 flex justify-end pb-12">
+              <Button
+                onClick={() => setIsLoading(true)}
+                isLoading={isLoading}
+                loadingText="Continuing to Checkout"
+                disabled={isLoading}
+                className="mt-6 p-3 sm:px-5 lg:px-8 font-semibold text-white bg-zinc-900 rounded-lg hover:bg-zinc-800"
+              >
+                Continue to Checkout
+                <ArrowRight className="size-5 ml-1.5 inline" />
+              </Button>
             </div>
           </div>
         </div>
