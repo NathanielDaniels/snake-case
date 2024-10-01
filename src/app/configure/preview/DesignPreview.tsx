@@ -12,7 +12,8 @@ import { format } from "path";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
-import router from "next/router";
+import { useRouter } from "next/navigation";
+
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const config = {
     // angle: 90,
@@ -27,7 +28,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     // perspective: "500px",
     colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
   };
-
+  const router = useRouter();
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -55,25 +56,26 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     ({ value }) => value === model
   )!;
 
-    const { mutate: saveConfig } = useMutation({
+  //! double check this line (everything inside the brackets <>)
+  const { mutate: createPaymentSession } = useMutation<void, unknown, { configId: string }>({
     mutationKey: ["get-checkout-session"],
-    // mutationFn: async (args: SaveConfigArgs) => {
-    //   await Promise.all([saveConfiguration(), _saveConfig(args)]);
-    // },
+    // mutationFn: createCheckoutSession,
+    onSuccess: ({ url }: any) => {
+      if (url) router.push(url)
+      else throw new Error("Unable to retrieve payment URL.");
+      //     toast({
+      //   title: "Configuration saved",
+      //   description: `Your configuration has been saved successfully!`,
+      //   variant: "default",
+      // });
+      // router.push(`/configure/preview?id=${configId}`);
+    },
     onError: () => {
       toast({
         title: "Something went wrong",
         description: `There was an error on our end, please try again!`,
         variant: "destructive",
       });
-    },
-    onSuccess: () => {
-      toast({
-        title: "Configuration saved",
-        description: `Your configuration has been saved successfully!`,
-        variant: "default",
-      });
-      // router.push(`/configure/preview?id=${configId}`);
     },
   });
 
@@ -167,7 +169,10 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
             </div>
             <div className="mt-8 flex justify-end pb-12">
               <Button
-                onClick={() => setIsLoading(true)}
+                onClick={() => {
+                  setIsLoading(true);
+                  createPaymentSession({configId: configuration.id});
+                }}
                 isLoading={isLoading}
                 loadingText="Continuing to Checkout"
                 disabled={isLoading}
