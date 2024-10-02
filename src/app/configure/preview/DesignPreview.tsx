@@ -57,11 +57,15 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   )!;
 
   //! double check this line (everything inside the brackets <>)
-  const { mutate: createPaymentSession } = useMutation<void, unknown, { configId: string }>({
+  const { mutate: createPaymentSession } = useMutation<
+    void,
+    unknown,
+    { configId: string }
+  >({
     mutationKey: ["get-checkout-session"],
     // mutationFn: createCheckoutSession,
     onSuccess: ({ url }: any) => {
-      if (url) router.push(url)
+      if (url) router.push(url);
       else throw new Error("Unable to retrieve payment URL.");
       //     toast({
       //   title: "Configuration saved",
@@ -171,11 +175,11 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
               <Button
                 onClick={() => {
                   setIsLoading(true);
-                  createPaymentSession({configId: configuration.id});
+                  createPaymentSession({ configId: configuration.id });
                 }}
                 isLoading={isLoading}
                 loadingText="Continuing to Checkout"
-                disabled={isLoading}
+                // disabled={isLoading}
                 className="mt-6 p-3 sm:px-5 lg:px-8 font-semibold text-white bg-zinc-900 rounded-lg hover:bg-zinc-800"
               >
                 Continue to Checkout
