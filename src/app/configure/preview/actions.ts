@@ -4,7 +4,6 @@ import { BASE_PRICE, PRODUCT_PRICES } from "@/config/products";
 import { db } from "@/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Order } from "@prisma/client";
-// import { config } from "process";
 import { stripe } from "@/lib/stripe";
 
 export const createCheckoutSession = async ({
@@ -24,7 +23,8 @@ export const createCheckoutSession = async ({
   const user = await getUser();
 
   if (!user) {
-    throw new Error("User not found");
+    console.log(user, configuration.id);
+    throw new Error("You need to be logged in to checkout");
   }
 
   const { finish, material } = configuration;
@@ -42,9 +42,11 @@ export const createCheckoutSession = async ({
   const existingOrder = await db.order.findFirst({
     where: {
       userId: user.id,
-      configurationId: configId,
+      configurationId: configuration.id,
     },
   });
+
+  console.log("did this work?!", user.id, configuration.id);
 
   if (existingOrder) {
     order = existingOrder;
@@ -68,16 +70,16 @@ export const createCheckoutSession = async ({
   });
 
   const stripeSession = await stripe.checkout.sessions.create({
+    success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
+    cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/configure/preview?id=${configuration.id}`,
     payment_method_types: ["card", "paypal"],
-    line_items: [{ price: product.default_price as string, quantity: 1 }],
     mode: "payment",
+    shipping_address_collection: { allowed_countries: ["DE", "US"] },
     metadata: {
       userId: user.id,
       orderId: order.id,
     },
-    shipping_address_collection: { allowed_countries: ["DE", "US"] },
-    success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
-    cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/configure/preview?id=${configuration.id}`,
+    line_items: [{ price: product.default_price as string, quantity: 1 }],
   });
 
   return { url: stripeSession.url };
