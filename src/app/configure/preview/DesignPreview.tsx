@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { createCheckoutSession } from "./actions";
 
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const config = {
@@ -56,28 +57,18 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     ({ value }) => value === model
   )!;
 
-  //! double check this line (everything inside the brackets <>)
-  const { mutate: createPaymentSession } = useMutation<
-    void,
-    unknown,
-    { configId: string }
-  >({
+  const { mutate: createPaymentSession } = useMutation({
     mutationKey: ["get-checkout-session"],
-    // mutationFn: createCheckoutSession,
-    onSuccess: ({ url }: any) => {
+    mutationFn: createCheckoutSession,
+    onSuccess: ({ url }) => {
+      console.log("url", url);
       if (url) router.push(url);
       else throw new Error("Unable to retrieve payment URL.");
-      //     toast({
-      //   title: "Configuration saved",
-      //   description: `Your configuration has been saved successfully!`,
-      //   variant: "default",
-      // });
-      // router.push(`/configure/preview?id=${configId}`);
     },
     onError: () => {
       toast({
         title: "Something went wrong",
-        description: `There was an error on our end, please try again!`,
+        description: "There was an error on our end. Please try again.",
         variant: "destructive",
       });
     },
