@@ -23,7 +23,6 @@ export const createCheckoutSession = async ({
   const user = await getUser();
 
   if (!user) {
-    console.log(user, configuration.id);
     throw new Error("You need to be logged in to checkout");
   }
 
@@ -45,8 +44,6 @@ export const createCheckoutSession = async ({
       configurationId: configuration.id,
     },
   });
-
-  console.log("did this work?!", user.id, configuration.id);
 
   if (existingOrder) {
     order = existingOrder;
