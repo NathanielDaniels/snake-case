@@ -9,7 +9,7 @@ const StepsArr = [
   },
   {
     name: "Step 2: Customize design",
-    description: "Make the case your own with custom text and colors",
+    description: "Customize your case and make it your own",
     url: "/design",
   },
   {
