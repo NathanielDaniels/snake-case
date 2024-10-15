@@ -14,6 +14,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { createCheckoutSession } from "./actions";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const config = {
@@ -34,6 +35,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => setShowConfetti(true));
+  const user = useKindeBrowserClient();
 
   const borderDots = (
     <span className="flex-grow border-b border-dotted border-gray-400 mx-2"></span>
@@ -74,6 +76,15 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     },
   });
 
+  const handleCheckout = () => {
+    if (user) {
+      createPaymentSession({ configId: configuration.id });
+    } else {
+      localStorage.setItem("configurationId", configuration.id);
+      setIsLoginModalOpen(true);
+    }
+  };
+
   return (
     <>
       <div
@@ -82,7 +93,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
       >
         <Confetti active={showConfetti} config={config} />
       </div>
-      {/* <LoginModal isOpen={isLoginModalOpen} setIsOpen={setIsLoginModalOpen} /> */}
+      <LoginModal isOpen={isLoginModalOpen} setIsOpen={setIsLoginModalOpen} />
       <div className="mt-20 flex flex-col items-center md:grid text-sm sm:grid-cols-12 sm:grid-rows-1 sm:gap-x-6 md:gap-x-8 lg:gap-x-12">
         <div className="mb-8 md:col-span-4 lg:col-span-3 md:row-span-2 md:row-end-2">
           <Phone
