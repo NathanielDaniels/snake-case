@@ -63,7 +63,6 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     mutationKey: ["get-checkout-session"],
     mutationFn: createCheckoutSession,
     onSuccess: ({ url }) => {
-      console.log("url", url);
       if (url) router.push(url);
       else throw new Error("Unable to retrieve payment URL.");
     },
@@ -175,10 +174,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
             </div>
             <div className="mt-8 flex justify-end pb-12">
               <Button
-                onClick={() => {
-                  setIsLoading(true);
-                  createPaymentSession({ configId: configuration.id });
-                }}
+                onClick={() => handleCheckout()}
                 isLoading={isLoading}
                 loadingText="Continuing to Checkout"
                 // disabled={isLoading}
