@@ -1,8 +1,10 @@
+import { Suspense } from "react";
+import ThankYou from "./ThankYou";
 const page = () => {
   return (
-    <div>
-      <h1>Thank you for your purchase!</h1>
-    </div>
+    <Suspense>
+      <ThankYou />
+    </Suspense>
   );
 };
 
