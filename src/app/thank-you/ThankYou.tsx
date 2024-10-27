@@ -7,7 +7,9 @@ const ThankYou = () => {
 
     const {} = useQuery({
         queryKey: ["get-payment-status"],
-        queryFn: async () => await getPaymentStatus(),
+        queryFn: async () => await getPaymentStatus({orderId: "123"}),
+        retry: true,
+        retryDelay: 500,
     })
     return (
         <div>
