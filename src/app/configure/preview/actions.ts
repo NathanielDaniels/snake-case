@@ -28,13 +28,13 @@ export const createCheckoutSession = async ({
   //   throw new Error("You need to be logged in to checkout");
   // }
 
-  if (user === null || user === undefined) {
-    throw new Error("You need to be logged in to checkout");
-  }
-
-  // if (!user || !user.email || !user.id) {
+  // if (user === null || user === undefined) {
   //   throw new Error("You need to be logged in to checkout");
   // }
+
+  if (!user || !user.email || !user.id) {
+    throw new Error("You need to be logged in to checkout");
+  }
 
   const { finish, material } = configuration;
 
@@ -75,6 +75,8 @@ export const createCheckoutSession = async ({
       unit_amount: price,
     },
   });
+
+  console.log("testing testing", process.env.NEXT_PUBLIC_BASE_URL);
 
   const stripeSession = await stripe.checkout.sessions.create({
     success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
