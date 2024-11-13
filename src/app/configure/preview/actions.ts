@@ -22,19 +22,19 @@ export const createCheckoutSession = async ({
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
-  // console.log("user", user);
+  console.log("user", user);
 
   // if (!user) {
   //   throw new Error("You need to be logged in to checkout");
   // }
 
-  // if (user === null || user === undefined) {
-  //   throw new Error("You need to be logged in to checkout");
-  // }
-
-  if (!user || !user.email || !user.id) {
+  if (!user || user === null || user === undefined) {
     throw new Error("You need to be logged in to checkout");
   }
+
+  // if (!user || !user.email || !user.id) {
+  //   throw new Error("You need to be logged in to checkout");
+  // }
 
   const { finish, material } = configuration;
 
