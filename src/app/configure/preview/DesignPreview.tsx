@@ -8,9 +8,8 @@ import Confetti from "react-dom-confetti";
 import { COLORS, MODELS } from "@/validators/option-validator";
 import { ArrowRight, Check } from "lucide-react";
 import { PRODUCT_PRICES, BASE_PRICE } from "@/config/products";
-import { format } from "path";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { createCheckoutSession } from "./actions";
@@ -18,24 +17,28 @@ import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const config = {
-    // angle: 90,
     spread: 90,
-    // startVelocity: 40,
     elementCount: 200,
+    colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
+    // angle: 90,
+    // startVelocity: 40,
     // dragFriction: 0.12,
     // duration: 3000,
     // stagger: 3,
     // width: "10px",
     // height: "10px",
     // perspective: "500px",
-    colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
   };
+
   const router = useRouter();
+  const { toast } = useToast();
+  const { id } = configuration;
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => setShowConfetti(true));
   const user = useKindeBrowserClient();
+
+  useEffect(() => setShowConfetti(true));
 
   const borderDots = (
     <span className="flex-grow border-b border-dotted border-gray-400 mx-2"></span>
@@ -77,10 +80,11 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
 
   const handleCheckout = () => {
     if (user) {
-      createPaymentSession({ configId: configuration.id });
+      createPaymentSession({ configId: id });
     } else {
-      localStorage.setItem("configurationId", configuration.id);
+      localStorage.setItem("configurationId", id);
       setIsLoginModalOpen(true);
+      setIsLoading(false);
     }
   };
 
@@ -175,9 +179,9 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
             <div className="mt-8 flex justify-end pb-12">
               <Button
                 onClick={() => handleCheckout()}
+                disabled={isLoading}
                 isLoading={isLoading}
                 loadingText="Continuing to Checkout"
-                // disabled={isLoading}
                 className="mt-6 p-3 sm:px-5 lg:px-8 font-semibold text-white bg-zinc-900 rounded-lg hover:bg-zinc-800"
               >
                 Continue to Checkout

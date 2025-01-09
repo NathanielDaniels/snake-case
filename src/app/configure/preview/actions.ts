@@ -22,19 +22,9 @@ export const createCheckoutSession = async ({
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
-  console.log("user", user);
-
-  // if (!user) {
-  //   throw new Error("You need to be logged in to checkout");
-  // }
-
-  if (!user || user === null || user === undefined) {
+  if (!user) {
     throw new Error("You need to be logged in to checkout");
   }
-
-  // if (!user || !user.email || !user.id) {
-  //   throw new Error("You need to be logged in to checkout");
-  // }
 
   const { finish, material } = configuration;
 
@@ -76,12 +66,10 @@ export const createCheckoutSession = async ({
     },
   });
 
-  console.log("testing testing", process.env.NEXT_PUBLIC_BASE_URL);
-
   const stripeSession = await stripe.checkout.sessions.create({
     success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
     cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/configure/preview?id=${configuration.id}`,
-    payment_method_types: ["card", "paypal"],
+    payment_method_types: ["card"],
     mode: "payment",
     shipping_address_collection: { allowed_countries: ["DE", "US"] },
     metadata: {
