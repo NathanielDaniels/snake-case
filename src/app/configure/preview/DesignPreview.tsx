@@ -16,18 +16,13 @@ import { createCheckoutSession } from "./actions";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
-  const config = {
-    spread: 90,
-    elementCount: 200,
+  const confettiConfig = {
+    spread: 100,
+    elementCount: 100,
     colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
-    // angle: 90,
-    // startVelocity: 40,
-    // dragFriction: 0.12,
-    // duration: 3000,
-    // stagger: 3,
-    // width: "10px",
-    // height: "10px",
-    // perspective: "500px",
+    duration: 4500,
+    width: "20px",
+    height: "20px",
   };
 
   const router = useRouter();
@@ -36,7 +31,9 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
-  const user = useKindeBrowserClient();
+  const { user, isAuthenticated } = useKindeBrowserClient();
+
+  console.log(isAuthenticated);
 
   useEffect(() => setShowConfetti(true));
 
@@ -79,7 +76,8 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   });
 
   const handleCheckout = () => {
-    if (user) {
+    if (user && isAuthenticated) {
+      // setIsLoading(true);
       createPaymentSession({ configId: id });
     } else {
       localStorage.setItem("configurationId", id);
@@ -94,7 +92,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
         aria-hidden="true"
         className="pointer-events-none select-none absolute inset-0 overflow-hidden flex justify-center"
       >
-        <Confetti active={showConfetti} config={config} />
+        <Confetti active={showConfetti} config={confettiConfig} />
       </div>
       <LoginModal isOpen={isLoginModalOpen} setIsOpen={setIsLoginModalOpen} />
       <div className="mt-20 flex flex-col items-center md:grid text-sm sm:grid-cols-12 sm:grid-rows-1 sm:gap-x-6 md:gap-x-8 lg:gap-x-12">
