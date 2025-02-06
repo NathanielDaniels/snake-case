@@ -28,7 +28,6 @@ const OrderReceivedEmail = ({
       ? "http://localhost:3000"
       : "https://casecobra.vercel.app";
 
-  console.log("baseUrl", baseUrl);
 
   return (
     <Html>
