@@ -2,6 +2,7 @@
 
 import { db } from "@/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+// const { PrismaClient } = require("@prisma/client");
 
 export const getPaymentStatus = async ({ orderId }: { orderId: string }) => {
   const { getUser } = getKindeServerSession();
@@ -10,6 +11,10 @@ export const getPaymentStatus = async ({ orderId }: { orderId: string }) => {
   if (!user?.id || !user?.email) {
     throw new Error("You need to be logged in to view this page");
   }
+
+  // const prisma = new PrismaClient({
+  //   log: ["query", "error"], // Logs only queries and errors
+  // });
 
   const order = await db.order.findFirst({
     where: {
@@ -25,11 +30,12 @@ export const getPaymentStatus = async ({ orderId }: { orderId: string }) => {
   });
 
   if (!order) throw new Error("This order does not exist.");
-
+  console.log("thank-you actions order:", order);
 
   if (order.isPaid) {
     return order;
   } else {
+    // return order;
     return false;
   }
 };
