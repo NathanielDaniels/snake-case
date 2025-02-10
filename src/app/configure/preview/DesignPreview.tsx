@@ -73,12 +73,13 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   });
 
   const handleCheckout = () => {
+    if (!isAuthenticated)
+      setIsLoginModalOpen(true);
     if (user && isAuthenticated) {
       setIsLoading(true);
       createPaymentSession({ configId: id });
     } else {
       localStorage.setItem("configurationId", id);
-      setIsLoginModalOpen(true);
       setIsLoading(false);
     }
   };
