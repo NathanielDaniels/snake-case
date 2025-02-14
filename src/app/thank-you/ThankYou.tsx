@@ -84,9 +84,9 @@ const ThankYou = () => {
             </h4>
             <p className="mt-2 text-sm text-zinc-600">
               At CobraCase, we believe a phone case should do more than just
-              look great—it should stand the test of time. That’s why we offer a
-              5-year print guarantee. If your case doesn’t meet our high-quality
-              standards, we’ll replace it free of charge.
+              look great. It should stand the test of time. That’s why we offer
+              a 5-year print guarantee. If your case doesn’t meet our
+              high-quality standards, we’ll replace it free of charge.
             </p>
           </div>
         </div>
@@ -132,7 +132,7 @@ const ThankYou = () => {
             <div>
               <p className="font-medium text-zinc-900">Shipping Method</p>
               <p className="mt-2 text-zinc-700">
-                DHL, takes up to 3 working days
+                DHL, takes up to 3 business days
               </p>
             </div>
           </div>
