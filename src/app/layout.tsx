@@ -10,7 +10,7 @@ import Providers from "@/components/Providers";
 const recursive = Recursive({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Case Cobra",
+  title: "SnakeCase",
   description: "Next Generation Custom Phone Cases",
 };
 
