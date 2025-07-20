@@ -83,10 +83,10 @@ const ThankYou = () => {
               You made a great choice!
             </h4>
             <p className="mt-2 text-sm text-zinc-600">
-              At CobraCase, we believe a phone case should do more than just
-              look great. It should stand the test of time. That’s why we offer
-              a 5-year print guarantee. If your case doesn’t meet our
-              high-quality standards, we’ll replace it free of charge.
+              At SnakeCase, we believe a phone case should do more than just
+              look great. It should stand the test of time. That's why we offer
+              a 5-year print guarantee. If your case doesn't meet our
+              high-quality standards, we'll replace it free of charge.
             </p>
           </div>
         </div>
