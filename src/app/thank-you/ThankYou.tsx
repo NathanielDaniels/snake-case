@@ -24,7 +24,7 @@ const ThankYou = () => {
         <div className="flex flex-col items-center gap-2">
           <Loader2 className="h-8 w-8 animate-spin text-zinc-500" />
           <h3 className="font-semibold text-xl">Loading your order...</h3>
-          <p>This won't take long.</p>
+          <p>This won&apos;t take long.</p>
         </div>
       </div>
     );
@@ -69,7 +69,7 @@ const ThankYou = () => {
             Your case is on the way!
           </h1>
           <p className="mt-2 text-base text-zinc-500">
-            We've received your order and is now processing.
+            We&apos;ve received your order and are now processing it.
           </p>
 
           <div className="mt-12 text-sm font-medium">
@@ -86,7 +86,7 @@ const ThankYou = () => {
               At SnakeCase, we believe a phone case should do more than just
               look great. It should stand the test of time. That's why we offer
               a 5-year print guarantee. If your case doesn't meet our
-              high-quality standards, we'll replace it free of charge.
+              high-quality standards, we&apos;ll replace it free of charge.
             </p>
           </div>
         </div>

@@ -32,7 +32,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { user, isAuthenticated } = useKindeBrowserClient();
 
-  useEffect(() => setShowConfetti(true));
+  useEffect(() => setShowConfetti(true), []);
 
   const borderDots = (
     <span className="flex-grow border-b border-dotted border-gray-400 mx-2"></span>
@@ -73,8 +73,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   });
 
   const handleCheckout = () => {
-    if (!isAuthenticated)
-      setIsLoginModalOpen(true);
+    if (!isAuthenticated) setIsLoginModalOpen(true);
     if (user && isAuthenticated) {
       setIsLoading(true);
       createPaymentSession({ configId: id });
