@@ -24,6 +24,7 @@ import { unstable_noStore as noStore } from "next/cache";
 
 const Page = async () => {
   noStore();
+  
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
