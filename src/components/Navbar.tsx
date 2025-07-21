@@ -13,7 +13,7 @@ const Navbar = async () => {
       <MaxWidthWrapper>
         <div className="flex h-14 items-center justify-between border-b border-zinc-200">
           <Link href="/" className="flex z-40 font-semibold">
-            case<span className="text-green-600">cobra</span>
+            Snake<span className="text-green-600">Case</span>
           </Link>
           <div className="h-full flex items-center space-x-4">
             {user ? (
@@ -78,7 +78,7 @@ const Navbar = async () => {
                   className={buttonVariants({
                     size: "sm",
                     className: "hidden sm:flex items-center gap-1",
-                  })} 
+                  })}
                 >
                   Create case
                   <ArrowRight className="ml-1.5 h-5 w-5" />
