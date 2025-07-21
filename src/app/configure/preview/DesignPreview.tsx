@@ -24,7 +24,6 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     width: "20px",
     height: "20px",
   };
-
   const router = useRouter();
   const { toast } = useToast();
   const { id } = configuration;
@@ -32,8 +31,6 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const { user, isAuthenticated } = useKindeBrowserClient();
-
-  console.log(isAuthenticated);
 
   useEffect(() => setShowConfetti(true));
 
@@ -76,12 +73,13 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   });
 
   const handleCheckout = () => {
+    if (!isAuthenticated)
+      setIsLoginModalOpen(true);
     if (user && isAuthenticated) {
-      // setIsLoading(true);
+      setIsLoading(true);
       createPaymentSession({ configId: id });
     } else {
       localStorage.setItem("configurationId", id);
-      setIsLoginModalOpen(true);
       setIsLoading(false);
     }
   };

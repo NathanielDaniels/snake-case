@@ -22,7 +22,6 @@ const Page = () => {
     retryDelay: 500,
   });
 
-  console.log("configuration Id: ", configId);
   if (data?.success) {
     if (configId) {
       localStorage.removeItem("configurationId");

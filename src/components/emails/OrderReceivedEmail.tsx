@@ -26,9 +26,8 @@ const OrderReceivedEmail = ({
   const baseUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : "https://casecobra.vercel.app";
+      : "https://snakecase.vercel.app";
 
-  console.log("baseUrl", baseUrl);
 
   return (
     <Html>
@@ -93,7 +92,7 @@ const OrderReceivedEmail = ({
             </Row>
             <Row>
               <Text style={footer.text}>
-                © CaseCobra, Inc. All Rights Reserved.
+                © SnakeCase, Inc. All Rights Reserved.
               </Text>
             </Row>
           </Section>
