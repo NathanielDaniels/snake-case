@@ -1,5 +1,5 @@
 [build]
-  command = "npm install sharp --platform=linux --arch=x64 && pnpm build"
+  command = "npm install sharp --platform=linux --arch=x64 && npx prisma generate && pnpm build"
   publish = ".next"
 
 [build.environment]
@@ -11,3 +11,6 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+[functions]
+  node_bundler = "esbuild"
