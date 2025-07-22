@@ -22,6 +22,9 @@ import { notFound } from "next/navigation";
 import StatusDropdown from "./StatusDropdown";
 import { unstable_noStore as noStore } from "next/cache";
 
+// for Netlify compatibility
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic"; 
 const Page = async () => {
   noStore();
   
