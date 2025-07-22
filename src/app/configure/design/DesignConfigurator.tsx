@@ -215,13 +215,26 @@ const DesignConfigurator = ({
           }}
         >
           <div className="relative w-full h-full">
-            <NextImage
+            <img
+              src={imageUrl}
+              alt="your image"
+              className="pointer-events-none w-full h-full object-contain"
+              crossOrigin="anonymous"
+              onError={(e) => {
+                console.error("Failed to load image:", imageUrl);
+                e.currentTarget.src = "/placeholder-image.png"; // Add a placeholder image
+              }}
+              onLoad={() => {
+                console.log("Image loaded successfully:", imageUrl);
+              }}
+            />
+            {/* <NextImage
               src={imageUrl}
               fill
               alt="your image"
               className="pointer-events-none"
               objectFit="contain"
-            />
+            /> */}
           </div>
         </Rnd>
       </div>
