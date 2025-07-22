@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 import DesignPreview from "./DesignPreview";
 import { unstable_noStore as noStore } from "next/cache";
 
-// Add this export
+// for Netlify compatibility
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+export const revalidate = 0;
 
 interface PageProps {
   searchParams: {
