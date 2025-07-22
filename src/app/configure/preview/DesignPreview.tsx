@@ -73,14 +73,23 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   });
 
   const handleCheckout = () => {
-    if (!isAuthenticated) setIsLoginModalOpen(true);
-    if (user && isAuthenticated) {
-      setIsLoading(true);
-      createPaymentSession({ configId: id });
-    } else {
+    // console.log("Checkout clicked:", { user, isAuthenticated });
+    if (!isAuthenticated || !user) {
+      setIsLoginModalOpen(true);
       localStorage.setItem("configurationId", id);
-      setIsLoading(false);
+      return;
     }
+    setIsLoading(true);
+    createPaymentSession({ configId: id });
+
+    // if (user && isAuthenticated) {
+    //   setIsLoading(true);
+    //   createPaymentSession({ configId: id });
+    // } else {
+    //   localStorage.setItem("configurationId", id);
+    //   setIsLoading(false);
+    //   console.log("Checkout clicked:", { user, isAuthenticated });
+    // }
   };
 
   return (
