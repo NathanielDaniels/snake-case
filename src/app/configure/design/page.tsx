@@ -1,6 +1,9 @@
 import { db } from "@/db";
 import { notFound } from "next/navigation";
 import DesignConfigurator from "./DesignConfigurator";
+import { unstable_noStore as noStore } from "next/cache";
+
+export const dynamic = "force-dynamic";
 
 interface PageProps {
   searchParams: {
@@ -9,6 +12,7 @@ interface PageProps {
 }
 
 const Page = async ({ searchParams }: PageProps) => {
+  noStore();
   const { id } = searchParams;
 
   if (!id || typeof id !== "string") {
