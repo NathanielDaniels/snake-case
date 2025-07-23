@@ -66,9 +66,15 @@ export const createCheckoutSession = async ({
     },
   });
 
+  const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL?.replace(/\/$/, "");
+
+  if (!baseUrl) {
+    throw new Error("NEXT_PUBLIC_SERVER_URL is not configured");
+  }
+
   const stripeSession = await stripe.checkout.sessions.create({
-    success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
-    cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/configure/preview?id=${configuration.id}`,
+    success_url: `${baseUrl}/thank-you?orderId=${order.id}`,
+    cancel_url: `${baseUrl}/configure/preview?id=${configuration.id}`,
     payment_method_types: ["card"],
     mode: "payment",
     shipping_address_collection: { allowed_countries: ["DE", "US"] },
