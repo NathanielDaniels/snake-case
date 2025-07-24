@@ -60,8 +60,10 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     mutationKey: ["get-checkout-session"],
     mutationFn: createCheckoutSession,
     onSuccess: ({ url }) => {
-      if (url) router.push(url);
-      else throw new Error("Unable to retrieve payment URL.");
+      console.log("Payment session created:", { url });
+      return;
+      // if (url) router.push(url);
+      // else throw new Error("Unable to retrieve payment URL.");
     },
     onError: () => {
       toast({
@@ -73,7 +75,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   });
 
   const handleCheckout = () => {
-    // console.log("Checkout clicked:", { user, isAuthenticated });
+    console.log("Checkout clicked:", { user, isAuthenticated });
     if (!isAuthenticated || !user) {
       setIsLoginModalOpen(true);
       localStorage.setItem("configurationId", id);
