@@ -3,9 +3,20 @@ import { MaxWidthWrapper } from "./MaxWidthWrapper";
 import { ArrowRight } from "lucide-react";
 import { buttonVariants } from "./ui/button";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+
 const Navbar = async () => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
+
+  // Temporary debug - remove after testing
+  console.log("=== NAVBAR DEBUG ===");
+  console.log("Environment:", process.env.NODE_ENV);
+  console.log("Site URL:", process.env.KINDE_SITE_URL);
+  console.log("Base URL:", process.env.NEXT_PUBLIC_BASE_URL);
+  console.log("User:", user);
+  console.log("=====================");
+
+  // ...rest of your code
 
   const isAdmin = user?.email === process.env.ADMIN_EMAIL;
   return (
@@ -67,6 +78,13 @@ const Navbar = async () => {
                     size: "sm",
                     variant: "ghost",
                   })}
+                  onClick={() => {
+                    console.log("Login URL:", "/api/auth/login");
+                    console.log(
+                      "Expected redirect:",
+                      process.env.KINDE_POST_LOGIN_REDIRECT_URL
+                    );
+                  }}
                 >
                   Login
                 </Link>
