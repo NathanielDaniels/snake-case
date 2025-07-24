@@ -78,13 +78,6 @@ const Navbar = async () => {
                     size: "sm",
                     variant: "ghost",
                   })}
-                  onClick={() => {
-                    console.log("Login URL:", "/api/auth/login");
-                    console.log(
-                      "Expected redirect:",
-                      process.env.KINDE_POST_LOGIN_REDIRECT_URL
-                    );
-                  }}
                 >
                   Login
                 </Link>
