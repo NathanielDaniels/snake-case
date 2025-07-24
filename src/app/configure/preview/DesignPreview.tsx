@@ -61,9 +61,8 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     mutationFn: createCheckoutSession,
     onSuccess: ({ url }) => {
       console.log("Payment session created:", { url });
-      return;
-      // if (url) router.push(url);
-      // else throw new Error("Unable to retrieve payment URL.");
+      if (url) router.push(url);
+      else throw new Error("Unable to retrieve payment URL.");
     },
     onError: () => {
       toast({
@@ -74,15 +73,25 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     },
   });
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     console.log("Checkout clicked:", { user, isAuthenticated });
     if (!isAuthenticated || !user) {
+      console.log("❌ Client-side auth check failed");
       setIsLoginModalOpen(true);
       localStorage.setItem("configurationId", id);
       return;
     }
+    console.log("✅ Client-side auth check passed");
     setIsLoading(true);
     createPaymentSession({ configId: id });
+
+    try {
+      const result = await createPaymentSession({ configId: id });
+      console.log("Checkout result:", result);
+    } catch (error) {
+      console.error("Checkout failed:", error);
+      setIsLoading(false);
+    }
 
     // if (user && isAuthenticated) {
     //   setIsLoading(true);
