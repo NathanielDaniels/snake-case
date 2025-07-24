@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { headers } from "next/headers"; // Import headers to access request headers
 import { MaxWidthWrapper } from "./MaxWidthWrapper";
 import { ArrowRight } from "lucide-react";
 import { buttonVariants } from "./ui/button";
@@ -17,6 +18,14 @@ const Navbar = async () => {
   console.log("=====================");
 
   // ...rest of your code
+
+  // Debug cookie information
+  console.log("=== COOKIE DEBUG ===");
+  console.log("Headers:", JSON.stringify(headers().get("cookie")));
+  console.log("User:", user);
+  console.log("====================");
+
+  // Rest of your code...
 
   const isAdmin = user?.email === process.env.ADMIN_EMAIL;
   return (
