@@ -75,7 +75,10 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   });
 
   const handleCheckout = async () => {
-    console.log("Checkout clicked:", { user, isAuthenticated });
+    console.log("Checkout clicked:", {
+      user,
+      isAuthenticated: isAuthenticated(),
+    });
     if (!isAuthenticated || !user) {
       console.log("❌ Client-side auth check failed");
       setIsLoginModalOpen(true);
