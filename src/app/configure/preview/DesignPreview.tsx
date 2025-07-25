@@ -13,7 +13,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { createCheckoutSession } from "./actions";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { useKindeBrowserClient } from "@/hooks/useKindeBrowserClient";
+// import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const confettiConfig = {
