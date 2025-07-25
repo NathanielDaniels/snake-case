@@ -79,7 +79,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
       user,
       isAuthenticated: isAuthenticated(),
     });
-    if (!isAuthenticated || !user) {
+    if (!isAuthenticated() || !user) {
       console.log("❌ Client-side auth check failed");
       setIsLoginModalOpen(true);
       localStorage.setItem("configurationId", id);
