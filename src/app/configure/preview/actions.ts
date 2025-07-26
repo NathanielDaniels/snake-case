@@ -15,27 +15,16 @@ export const createCheckoutSession = async ({
     where: { id: configId },
   });
 
-  console.log("=== CHECKOUT DEBUG ===");
-  console.log("Config ID:", configId);
-
   if (!configuration) {
     throw new Error("Configuration not found");
   }
 
-  const { getUser, isAuthenticated } = getKindeServerSession();
-  const authStatus = await isAuthenticated();
-  console.log("Is Authenticated:", authStatus);
+  const { getUser } = getKindeServerSession();
   const user = await getUser();
 
-  console.log("User from checkout action:", user);
-  console.log("User ID:", user?.id);
-  console.log("User Email:", user?.email);
-
   if (!user || !user.id) {
-    console.log("❌ No user found in checkout action");
     throw new Error("You need to be logged in to checkout");
   }
-  console.log("✅ User authenticated in checkout action");
   const { finish, material } = configuration;
 
   let price = BASE_PRICE;

@@ -20,14 +20,8 @@ import { formatPrice } from "@/lib/utils";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { notFound } from "next/navigation";
 import StatusDropdown from "./StatusDropdown";
-import { unstable_noStore as noStore } from "next/cache";
 
-// for Netlify compatibility
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic"; 
 const Page = async () => {
-  noStore();
-  
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
