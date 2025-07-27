@@ -172,17 +172,12 @@ const DesignConfigurator = ({
             ratio={896 / 1831}
             className="pointer-events-none relative z-50 aspect-[896/1831] w-full"
           >
-            <img
-              src="/phone-template.png"
-              alt="Phone Image"
-              className="pointer-events-none z-50 select-none w-full h-full object-contain"
-            />
-            {/* <NextImage
+            <NextImage
               fill
               alt="Phone Image"
               src="/phone-template.png"
               className="pointer-events-none z-50 select-none"
-            /> */}
+            />
           </AspectRatio>
           <div className="absolute z-40 inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px] shadow-[0_0_0_99999px_rgba(229,231,235,0.6)]" />
           <div
@@ -220,26 +215,14 @@ const DesignConfigurator = ({
           }}
         >
           <div className="relative w-full h-full">
-            <img
-              src={imageUrl}
-              alt="your image"
-              className="pointer-events-none w-full h-full object-contain"
-              crossOrigin="anonymous"
-              onError={(e) => {
-                console.error("Failed to load image:", imageUrl);
-                e.currentTarget.src = "/placeholder-image.png"; // Add a placeholder image
-              }}
-              onLoad={() => {
-                console.log("Image loaded successfully:", imageUrl);
-              }}
-            />
-            {/* <NextImage
+            <NextImage
               src={imageUrl}
               fill
               alt="your image"
-              className="pointer-events-none"
+              className="pointer-events-none w-full h-full object-contain"
               objectFit="contain"
-            /> */}
+              crossOrigin="anonymous"
+            />
           </div>
         </Rnd>
       </div>
@@ -296,7 +279,6 @@ const DesignConfigurator = ({
                         variant="outline"
                         role="combobox"
                         className="w-full justify-between"
-                        // onClick={handleDropdownClick}
                       >
                         {options.model.label}
                         <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
