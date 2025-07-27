@@ -9,24 +9,6 @@ const Navbar = async () => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
-  // Temporary debug - remove after testing
-  console.log("=== NAVBAR DEBUG ===");
-  console.log("Environment:", process.env.NODE_ENV);
-  console.log("Site URL:", process.env.KINDE_SITE_URL);
-  console.log("Base URL:", process.env.NEXT_PUBLIC_BASE_URL);
-  console.log("User:", user);
-  console.log("=====================");
-
-  // ...rest of your code
-
-  // Debug cookie information
-  console.log("=== COOKIE DEBUG ===");
-  console.log("Headers:", JSON.stringify(headers().get("cookie")));
-  console.log("User:", user);
-  console.log("====================");
-
-  // Rest of your code...
-
   const isAdmin = user?.email === process.env.ADMIN_EMAIL;
   return (
     <nav className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">

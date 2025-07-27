@@ -9,9 +9,6 @@ import OrderReceivedEmail from "@/components/emails/OrderReceivedEmail";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// const resend = process.env.RESEND_API_KEY
-//   ? new Resend(process.env.RESEND_API_KEY)
-//   : null;
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
