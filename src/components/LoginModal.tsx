@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import Image from "next/image";
+// import Image from "next/image";
 import { LoginLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs";
 import { buttonVariants } from "./ui/button";
 
@@ -22,18 +22,17 @@ const LoginModal = ({
       <DialogContent className="absolute z-[9999999]">
         <DialogHeader>
           <div className="relative mx-auto w-24 h-24 mb-2">
-            <Image
+            {/* <Image
               src="/snake-1.png"
               alt="snake image"
               className="w-full h-full object-contain"
               fill
-            />
-            {/* <img
+            /> */}
+            <img
               src="/snake-1.png"
               alt="snake image"
-              // className="pointer-events-none z-50 select-none w-full h-full object-contain"
-              className="w-full h-full object-contain"
-            /> */}
+              className="pointer-events-none z-50 select-none w-full h-full object-contain"
+            />
           </div>
           <DialogTitle className="text-3xl text-center font-bold tracking-tight text-gray-900">
             Log in to continue

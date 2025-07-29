@@ -13,6 +13,7 @@ import {
   Section,
   Text,
 } from "@react-email/components";
+// import Image from "next/image";
 
 const OrderReceivedEmail = ({
   shippingAddress,
@@ -25,8 +26,9 @@ const OrderReceivedEmail = ({
 }) => {
   const baseUrl =
     process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "https://snakecase.vercel.app";
+      ? "http://localhost:8888"
+      : "https://snakecase.netlify.app";
+  // : "https://snakecase.vercel.app";
 
   return (
     <Html>
@@ -35,6 +37,13 @@ const OrderReceivedEmail = ({
       <Body style={main}>
         <Container style={container}>
           <Section style={message}>
+            {/* <Image
+              src={`${baseUrl}/snake-3.png`}
+              width="65"
+              height="73"
+              alt="delivery snake"
+              style={{ margin: "auto" }}
+            /> */}
             <Img
               src={`${baseUrl}/snake-3.png`}
               width="65"
