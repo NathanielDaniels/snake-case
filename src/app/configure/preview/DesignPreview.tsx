@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { createCheckoutSession } from "./actions";
+// import { createCheckoutSession } from "./actions";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
@@ -58,21 +58,21 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     ({ value }) => value === model
   )!;
 
-  const { mutate: createPaymentSession } = useMutation({
-    mutationKey: ["get-checkout-session"],
-    mutationFn: createCheckoutSession,
-    onSuccess: ({ url }) => {
-      if (url) router.push(url);
-      else throw new Error("Unable to retrieve payment URL.");
-    },
-    onError: () => {
-      toast({
-        title: "Something went wrong",
-        description: "There was an error on our end. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
+  // const { mutate: createPaymentSession } = useMutation({
+  //   mutationKey: ["get-checkout-session"],
+  //   mutationFn: createCheckoutSession,
+  //   onSuccess: ({ url }) => {
+  //     if (url) router.push(url);
+  //     else throw new Error("Unable to retrieve payment URL.");
+  //   },
+  //   onError: () => {
+  //     toast({
+  //       title: "Something went wrong",
+  //       description: "There was an error on our end. Please try again.",
+  //       variant: "destructive",
+  //     });
+  //   },
+  // });
 
   const handleCheckout = async () => {
     if (!isAuthenticated || !user) {
@@ -81,8 +81,47 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
       setIsLoading(false);
       return;
     }
-    setIsLoading(true);
-    createPaymentSession({ configId: id });
+
+    try {
+      setIsLoading(true);
+
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          configId: configuration.id,
+          userId: user.id,
+          userEmail: user.email,
+          color: configuration.color,
+          finish: configuration.finish,
+          material: configuration.material,
+          model: configuration.model,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to create checkout session");
+      }
+
+      const { url } = await response.json();
+      window.location.href = url;
+    } catch (error) {
+      console.error("Checkout error:", error);
+      toast({
+        title: "Something went wrong",
+        description:
+          "There was an error creating your checkout session. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+
+    // setIsLoading(true);
+    // createPaymentSession({ configId: id });
   };
 
   return (
@@ -175,7 +214,8 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
             </div>
             <div className="mt-8 flex justify-end pb-12">
               <Button
-                onClick={() => handleCheckout()}
+                onClick={handleCheckout}
+                // onClick={() => handleCheckout()}
                 disabled={isLoading}
                 isLoading={isLoading}
                 loadingText="Continuing to Checkout"
