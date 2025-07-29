@@ -17,32 +17,24 @@ import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const confettiConfig = {
-    spread: 100,
-    elementCount: 100,
+    spread: 125,
+    elementCount: 150,
     colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
     duration: 4500,
     width: "20px",
     height: "20px",
+    dragFriction: 0.05,
+    zIndex: 9999,
   };
   const router = useRouter();
   const { toast } = useToast();
   const { id } = configuration;
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-  // const [isLoading, setIsLoading] = useState(false);
-  const { user, isAuthenticated, isLoading } = useKindeBrowserClient();
+  const [isLoading, setIsLoading] = useState(false);
+  const { user, isAuthenticated } = useKindeBrowserClient();
 
   useEffect(() => setShowConfetti(true), []);
-
-  // Add this debug effect
-  useEffect(() => {
-    console.log("🔍 Kinde Hook Debug:", {
-      user,
-      isAuthenticated,
-      isLoading,
-      timestamp: new Date().toISOString(),
-    });
-  }, [user, isAuthenticated, isLoading]);
 
   const borderDots = (
     <span className="flex-grow border-b border-dotted border-gray-400 mx-2"></span>
@@ -70,7 +62,6 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     mutationKey: ["get-checkout-session"],
     mutationFn: createCheckoutSession,
     onSuccess: ({ url }) => {
-      console.log("Payment session created:", { url });
       if (url) router.push(url);
       else throw new Error("Unable to retrieve payment URL.");
     },
@@ -84,38 +75,14 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   });
 
   const handleCheckout = async () => {
-    console.log("Checkout clicked:", { user, isAuthenticated, isLoading });
-
-    if (isLoading) {
-      console.log("⏳ Still loading authentication...");
-      return;
-    }
     if (!isAuthenticated || !user) {
-      console.log("❌ Client-side auth check failed");
       setIsLoginModalOpen(true);
       localStorage.setItem("configurationId", id);
+      setIsLoading(false);
       return;
     }
-    console.log("✅ Client-side auth check passed");
-    // setIsLoading(true);
+    setIsLoading(true);
     createPaymentSession({ configId: id });
-
-    // try {
-    //   const result = await createPaymentSession({ configId: id });
-    //   console.log("Checkout result:", result);
-    // } catch (error) {
-    //   console.error("Checkout failed:", error);
-    //   setIsLoading(false);
-    // }
-
-    // if (user && isAuthenticated) {
-    //   setIsLoading(true);
-    //   createPaymentSession({ configId: id });
-    // } else {
-    //   localStorage.setItem("configurationId", id);
-    //   setIsLoading(false);
-    //   console.log("Checkout clicked:", { user, isAuthenticated });
-    // }
   };
 
   return (
@@ -209,8 +176,8 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
             <div className="mt-8 flex justify-end pb-12">
               <Button
                 onClick={() => handleCheckout()}
-                // disabled={isLoading}
-                // isLoading={isLoading}
+                disabled={isLoading}
+                isLoading={isLoading}
                 loadingText="Continuing to Checkout"
                 className="mt-6 p-3 sm:px-5 lg:px-8 font-semibold text-white bg-zinc-900 rounded-lg hover:bg-zinc-800"
               >
